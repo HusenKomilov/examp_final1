@@ -7,6 +7,8 @@ from users.managers import UserManager
 
 class User(AbstractUser):
     username = models.CharField(max_length=128, unique=True)
+    first_name = None
+    last_name = None
 
     is_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
@@ -17,6 +19,7 @@ class User(AbstractUser):
     last_login = models.DateTimeField(auto_now=True)
 
     USERNAME_FIELD = "username"
+    # REQUIRED_FIELDS = ["username"]
 
     objects = UserManager()
 

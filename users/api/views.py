@@ -4,12 +4,12 @@ from rest_framework.decorators import action
 from rest_framework.mixins import ListModelMixin, RetrieveModelMixin, UpdateModelMixin
 from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
-from rest_framework import generics
-from users.api import serializers, views, permissions
+from rest_framework import generics, views, permissions
+from users.api import serializers
 from rest_framework_simplejwt.tokens import RefreshToken
 
 
-from .serializers import UserSerializer
+from .serializers import ProfileSerializer
 
 User = get_user_model()
 
@@ -67,17 +67,8 @@ class LoginApiView(views.APIView):
             raise e
 
 
-class Profile(generics.RetrieveUpdateAPIView):
-    queryset = User.objects.all()
-    serializer_class = serializers.ProfileSerializer
-    permission_classes = [permissions.IsAuthenticated]
-
-    def get_object(self, request):
-        return request.user
-
-
-class UserViewSet(RetrieveModelMixin, ListModelMixin, UpdateModelMixin, GenericViewSet):
-    serializer_class = UserSerializer
+class ProfileViewSet(RetrieveModelMixin, ListModelMixin, UpdateModelMixin, GenericViewSet):
+    serializer_class = ProfileSerializer
     queryset = User.objects.all()
     lookup_field = "username"
 
@@ -87,5 +78,5 @@ class UserViewSet(RetrieveModelMixin, ListModelMixin, UpdateModelMixin, GenericV
 
     @action(detail=False)
     def me(self, request):
-        serializer = UserSerializer(request.user, context={"request": request})
+        serializer = ProfileSerializer(request.user, context={"request": request})
         return Response(status=status.HTTP_200_OK, data=serializer.data)

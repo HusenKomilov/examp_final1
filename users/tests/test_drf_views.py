@@ -1,17 +1,17 @@
 import pytest
 from rest_framework.test import APIRequestFactory
 
-from users.api.views import UserViewSet
+from users.api.views import ProfileViewSet
 from users.models import User
 
 
-class TestUserViewSet:
+class TestProfileViewSet:
     @pytest.fixture
     def api_rf(self) -> APIRequestFactory:
         return APIRequestFactory()
 
     def test_get_queryset(self, user: User, api_rf: APIRequestFactory):
-        view = UserViewSet()
+        view = ProfileViewSet()
         request = api_rf.get("/fake-url/")
         request.user = user
 
@@ -20,7 +20,7 @@ class TestUserViewSet:
         assert user in view.get_queryset()
 
     def test_me(self, user: User, api_rf: APIRequestFactory):
-        view = UserViewSet()
+        view = ProfileViewSet()
         request = api_rf.get("/fake-url/")
         request.user = user
 

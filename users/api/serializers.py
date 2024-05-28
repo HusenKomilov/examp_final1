@@ -57,7 +57,7 @@ class LoginSerializer(serializers.ModelSerializer):
             raise e
 
 
-class UserSerializer(serializers.ModelSerializer):
+class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ["username",]

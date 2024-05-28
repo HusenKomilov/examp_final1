@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from blog import models
-from users.api.serializers import UserSerializer
+from users.api.serializers import ProfileSerializer
 
 
 class CategorySerializer(serializers.ModelSerializer):
@@ -18,7 +18,7 @@ class TagsSerializer(serializers.ModelSerializer):
 class PostSerializer(serializers.ModelSerializer):
     category = CategorySerializer()
     tags = TagsSerializer(many=True)
-    author = UserSerializer()
+    author = ProfileSerializer()
 
     class Meta:
         model = models.Posts
@@ -41,7 +41,7 @@ class CommentCreateSerializer(serializers.ModelSerializer):
 
 
 class CommentListSerializer(serializers.ModelSerializer):
-    user = UserSerializer()
+    user = ProfileSerializer()
     post = PostSerializer()
 
     class Meta:
