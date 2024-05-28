@@ -1,13 +1,28 @@
 from django.contrib.auth.models import AbstractUser
-from django.db.models import CharField
+from django.db import models
 from django.urls import reverse
-from django.utils.translation import gettext_lazy as _
+from rest_framework_simplejwt.tokens import RefreshToken
+from users.managers import UserManager
 
 
 class User(AbstractUser):
-    name = CharField(_("Name of User"), blank=True, max_length=255)
-    first_name = None
-    last_name = None
+    username = models.CharField(max_length=128, unique=True)
 
-    def get_absolute_url(self) -> str:
-        return reverse("users:detail", kwargs={"username": self.username})
+    is_staff = models.BooleanField(default=False)
+    is_superuser = models.BooleanField(default=False)
+    is_verified = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=True)
+
+    date_joined = models.DateTimeField(auto_now_add=True)
+    last_login = models.DateTimeField(auto_now=True)
+
+    USERNAME_FIELD = "username"
+
+    objects = UserManager()
+
+    def tokens(self):
+        refresh = RefreshToken.for_user(self)
+        return {
+            "refresh": str(refresh),
+            "access_token": str(refresh.access_token)
+        }

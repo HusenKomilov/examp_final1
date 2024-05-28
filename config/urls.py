@@ -5,7 +5,8 @@ from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.urls import include, path
 from django.views import defaults as default_views
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
-from rest_framework.authtoken.views import obtain_auth_token
+from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
+
 
 urlpatterns = [
     # Django Admin, use {% url 'admin:index' %}
@@ -24,7 +25,9 @@ urlpatterns += [
     # API base url
     path("api/", include("config.api_router")),
     # DRF auth token
-    path("auth-token/", obtain_auth_token),
+    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    # DRF swagger
     path("api/schema/", SpectacularAPIView.as_view(), name="api-schema"),
     path(
         "api/docs/",

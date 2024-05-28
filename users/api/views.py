@@ -1,13 +1,79 @@
-from django.contrib.auth import get_user_model
+from django.contrib.auth import get_user_model, authenticate
 from rest_framework import status
 from rest_framework.decorators import action
 from rest_framework.mixins import ListModelMixin, RetrieveModelMixin, UpdateModelMixin
 from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
+from rest_framework import generics
+from users.api import serializers, views, permissions
+from rest_framework_simplejwt.tokens import RefreshToken
+
 
 from .serializers import UserSerializer
 
 User = get_user_model()
+
+
+class RegistrationAPIView(views.APIView):
+    serializer_class = serializers.RegistrationSerializer
+
+    def post(self, request):
+        user_data = request.data
+        serializer = self.serializer_class(data=user_data)
+
+        if serializer.is_valid():
+            serializer.save()
+            user = serializer.data
+
+            return Response({
+                "data": user,
+            })
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+def get_tokens_for_user(user):
+    refresh = RefreshToken.for_user(user)
+    return {
+        'refresh': str(refresh),
+        'access': str(refresh.access_token),
+    }
+
+
+class LoginApiView(views.APIView):
+
+    def post(self, request):
+
+        data = request.data
+        username = data.get('username_or_email')
+        password = data.get('password')
+        user = authenticate(email=username, password=password)
+
+        if username is None or password is None:
+            return None
+
+            user = authenticate(username=username, password=password)
+        if not user:
+            return Response({"message": "invalide username or password"}, status=204)
+        try:
+
+            user_token = get_tokens_for_user(user)
+
+            response = {
+                "access_token": str(user_token.get("access")),
+                "refresh_token": str(user_token.get("refresh"))
+            }
+            return Response(response)
+        except Exception as e:
+            raise e
+
+
+class Profile(generics.RetrieveUpdateAPIView):
+    queryset = User.objects.all()
+    serializer_class = serializers.ProfileSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_object(self, request):
+        return request.user
 
 
 class UserViewSet(RetrieveModelMixin, ListModelMixin, UpdateModelMixin, GenericViewSet):
