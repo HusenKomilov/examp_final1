@@ -11,7 +11,7 @@ SECRET_KEY = env(
     default="gncLEwgkQqcV9WlCfUlA6untV45E5mioC0ApwMBGgRNmgv2Hnnhrnjs4sMEbcfWT",
 )
 # https://docs.djangoproject.com/en/dev/ref/settings/#allowed-hosts
-ALLOWED_HOSTS = ["localhost", "0.0.0.0", "127.0.0.1"]
+ALLOWED_HOSTS = ["*"]
 
 # CACHES
 # ------------------------------------------------------------------------------
@@ -69,7 +69,11 @@ CELERY_TASK_EAGER_PROPAGATES = True
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",  # noqa
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": "examp",
+        "USER": "postgres",
+        "PASSWORD": "20052211",
+        "HOST": "localhost",
+        "PORT": 5432,
     }
 }
