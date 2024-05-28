@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth import get_user_model
 from utils.models import BaseModel
 
 
@@ -24,6 +25,7 @@ class Posts(BaseModel):
     watched = models.IntegerField(default=0, editable=False)
 
     is_published = models.BooleanField(default=False)
+    is_recomendation = models.BooleanField(default=False)
 
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name="category")
     tags = models.ManyToManyField(Tags, related_name="tags")
