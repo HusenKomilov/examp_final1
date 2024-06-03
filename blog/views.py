@@ -1,4 +1,4 @@
-from rest_framework import generics, permissions
+from rest_framework import generics, permissions, viewsets
 from django.db.models import Q
 from django.utils import timezone
 from datetime import timedelta, datetime
@@ -50,10 +50,10 @@ class PostMonthListAPIView(generics.ListAPIView):
         return super().get_queryset().filter(created_at__gte=start_of_month, created_at__lt=start_of_next_month)
 
 
-class PostCreateAPIView(generics.CreateAPIView):
+class PostCreateAPIView(generics.GenericAPIView):
     queryset = models.Posts.objects.all().select_related("category", "author").prefetch_related("tags")
     serializer_class = serializers.PostCreateSerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    permission_classes = [permissions.IsAuthenticated]
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
@@ -71,7 +71,7 @@ class PostRetriveAPIView(generics.RetrieveAPIView):
         return obj
 
 
-class CommentCreateAPIView(generics.CreateAPIView):
+class CommentCreateAPIView(generics.GenericAPIView):
     queryset = models.Comments.objects.all().select_related("posts", "user")
     serializer_class = serializers.CommentCreateSerializer
 
