@@ -73,7 +73,7 @@ class PostRetriveAPIView(generics.RetrieveAPIView):
 
 class CommentCreateAPIView(generics.GenericAPIView):
     queryset = models.Comments.objects.all().select_related("posts", "user")
-    serializer_class = serializers.CommentCreateSerializer
+    serializer_class = serializers.CommentSerializer
 
     def perform_create(self, serializer):
         serializer.user = self.request.user
@@ -82,7 +82,7 @@ class CommentCreateAPIView(generics.GenericAPIView):
 
 class CommentListAPIView(generics.ListAPIView):
     queryset = models.Comments.objects.all().select_related("posts", "user")
-    serializer_class = serializers.CommentListSerializer
+    serializer_class = serializers.CommentSerializer
 
     def get_queryset(self):
         post_id = self.kwargs["pk"]

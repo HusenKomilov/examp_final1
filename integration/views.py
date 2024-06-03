@@ -3,7 +3,7 @@ from django.http import JsonResponse
 from rest_framework.views import APIView
 from rest_framework.authentication import BasicAuthentication
 from rest_framework.permissions import AllowAny
-from rest_framework.decorators import authentication_classes,
+from rest_framework.decorators import authentication_classes
 from integration import serializers
 import aiohttp
 import asyncio
@@ -11,7 +11,6 @@ import base64
 
 
 @authentication_classes([BasicAuthentication])
-@permission_classes([AllowAny])
 class BasicLoginView(APIView):
     serializer_class = serializers.EmployeeSerializer
     url = "http://176.192.70.122:90/fitnes_t_nfc_mobile/hs/nfc_mobile/v1"
@@ -29,8 +28,9 @@ class BasicLoginView(APIView):
         'Authorization': f'Basic {b64_auth_str}',
         'Content-Type': 'application/json'
     }
+    permission_classes = [AllowAny,]
 
-    def get(self, request):
+    async def get(self, request):
         async with aiohttp.ClientSession() as session:
             async with session.post(url=self.url, json=self.data, headers=self.headers) as response:
                 if response.status == 200:
