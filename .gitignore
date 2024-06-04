@@ -289,3 +289,4 @@ pytest.ini
 blog/blogs
 .vscode
 .envs
+main.py
