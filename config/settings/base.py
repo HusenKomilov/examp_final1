@@ -37,7 +37,7 @@ SITE_ID = 1
 # https://docs.djangoproject.com/en/dev/ref/settings/#use-i18n
 USE_I18N = True
 # https://docs.djangoproject.com/en/dev/ref/settings/#use-tz
-USE_TZ = True
+USE_TZ = False
 # https://docs.djangoproject.com/en/dev/ref/settings/#locale-paths
 LOCALE_PATHS = [str(BASE_DIR / "locale")]
 
@@ -69,6 +69,7 @@ DJANGO_APPS = [
     "jazzmin",
     "django.contrib.admin",
     "django.forms",
+    "blog.apps.BlogConfig",
 ]
 THIRD_PARTY_APPS = [
     "crispy_forms",
@@ -86,7 +87,6 @@ THIRD_PARTY_APPS = [
 
 LOCAL_APPS = [
     "users",
-    "blog",
     "integration",
     # Your stuff: custom apps go here
 ]
@@ -316,7 +316,7 @@ REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
-    "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated",),
+    "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.AllowAny",),
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
 }
 

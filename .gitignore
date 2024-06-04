@@ -284,3 +284,8 @@ media/
 
 
 db.sqlite3
+pytest_cache
+pytest.ini
+blog/blogs
+.vscode
+.envs

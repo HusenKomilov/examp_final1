@@ -29,6 +29,8 @@ class PostWeeklyListAPIView(generics.ListAPIView):
     serializer_class = serializers.PostSerializer
 
     def get_queryset(self):
+        # import datetime
+        # datetime.datetime.utcnow()
         today = timezone.now().date()
         start_of_week = today - timedelta(days=today.weekday())
         end_of_week = start_of_week + timedelta(days=7)

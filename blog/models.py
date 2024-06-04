@@ -3,11 +3,14 @@ from django.contrib.auth import get_user_model
 from utils.models import BaseModel
 
 
-class Category(BaseModel):
+class Category(models.Model):
     title = models.CharField(max_length=128, unique=True)
 
     def __str__(self):
         return self.title
+
+    class Meta:
+        app_label = "blog"
 
 
 class Tags(BaseModel):
@@ -15,6 +18,9 @@ class Tags(BaseModel):
 
     def __str__(self):
         return self.title
+    
+    class Meta:
+        app_label = "blog"
 
 
 class Posts(BaseModel):
@@ -33,6 +39,9 @@ class Posts(BaseModel):
 
     def __str__(self):
         return self.title
+    
+    class Meta:
+        app_label = "blog"
 
 
 class Comments(BaseModel):
@@ -43,3 +52,6 @@ class Comments(BaseModel):
 
     def __str__(self):
         return self.user.name
+    
+    class Meta:
+        app_label = "blog"

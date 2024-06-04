@@ -14,7 +14,7 @@ from .serializers import ProfileSerializer
 User = get_user_model()
 
 
-class RegistrationAPIView(views.APIView):
+class RegistrationAPIView(generics.GenericAPIView):
     serializer_class = serializers.RegistrationSerializer
 
     def post(self, request):
@@ -39,15 +39,13 @@ def get_tokens_for_user(user):
     }
 
 
-class LoginApiView(views.APIView):
+class LoginApiView(generics.GenericAPIView):
 
     def post(self, request):
-
         data = request.data
-        username = data.get('username_or_email')
+        username = data.get('username')
         password = data.get('password')
-        user = authenticate(email=username, password=password)
-
+        user = authenticate(username=username, password=password)
         if username is None or password is None:
             return None
 
