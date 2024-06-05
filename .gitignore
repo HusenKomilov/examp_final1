@@ -285,8 +285,6 @@ media/
 
 db.sqlite3
 pytest_cache
-pytest.ini
-blog/blogs
+blog/blogs/tests/test_example.py
 .vscode
 .envs
-main.py

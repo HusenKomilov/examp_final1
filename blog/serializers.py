@@ -42,11 +42,3 @@ class PostSerializer(serializers.ModelSerializer):
             tag, created = models.Tags.objects.get_or_create(**tags_data)
             post.tags.add(tag)
         return post
-
-
-class PostCreateSerializer(serializers.ModelSerializer):
-    author = serializers.ReadOnlyField(source="author.name")
-
-    class Meta:
-        model = models.Posts
-        fields = ("title", "description", "image", "category", "tags", "author")

@@ -29,3 +29,6 @@ class User(AbstractUser):
             "refresh": str(refresh),
             "access_token": str(refresh.access_token)
         }
+
+    class Meta:
+        app_label = "users"

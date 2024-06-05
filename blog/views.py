@@ -52,10 +52,10 @@ class PostMonthListAPIView(generics.ListAPIView):
         return super().get_queryset().filter(created_at__gte=start_of_month, created_at__lt=start_of_next_month)
 
 
-class PostCreateAPIView(generics.GenericAPIView):
+class PostCreateAPIView(generics.CreateAPIView):
     queryset = models.Posts.objects.all().select_related("category", "author").prefetch_related("tags")
     serializer_class = serializers.PostCreateSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.AllowAny]
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
